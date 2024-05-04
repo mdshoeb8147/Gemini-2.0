@@ -8,13 +8,32 @@ const ContextProvider = (props) => {
   const [recentPrompt, setRecentPrompt] = useState("");
   const [prevPrompts, setPrevPrompts] = useState([]);
   const [showResult, setShowResult] = useState(false);
-  const [loading, setLoaing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
 
-  const onSend = async (prompt) => {
-    await runChat(prompt);
+  const onSent = async (prompt) => {
+    setResultData(""), setLoading(true), setShowResult(true);
+    const response = await runChat(input);
+    setRecentPrompt(input);
+    setResultData(response);
+    setLoading(false);
+    setInput("");
   };
-  const contextValue = {};
+  const contextValue = {
+    input,
+    setInput,
+    recentPrompt,
+    setRecentPrompt,
+    prevPrompts,
+    setPrevPrompts,
+    showResult,
+    // setShowResult,
+    loading,
+    // setLoading,
+    resultData,
+    // setResultData,
+    onSent,
+  };
   return (
     <Context.Provider value={contextValue}>{props.children}</Context.Provider>
   );
